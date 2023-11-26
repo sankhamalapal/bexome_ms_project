@@ -32,6 +32,7 @@ class WeightDB {
 }
 
 List<WeightData> chartData = []; //list for the entered WeightData objects
+List<WeightData> chartDataAll = []; //list for the entered WeightData objects
 
 class DatabaseHelperWeight {
   DatabaseHelperWeight._privateConstructor();
@@ -119,13 +120,13 @@ class DatabaseHelperWeight {
     List<WeightDB> weightList = weights.isNotEmpty
         ? weights.map((e) => WeightDB.fromMap(e)).toList()
         : [];
-    chartData = changeWeightObjDBtoDataList(weightList);
-    for (WeightData data in chartData)
+    chartDataAll = changeWeightObjDBtoDataList(weightList);
+    for (WeightData data in chartDataAll)
       timestamp.add((data.timestamp.millisecondsSinceEpoch / 1000).round());
-    for (WeightData data in chartData)
+    for (WeightData data in chartDataAll)
       timestampchosen
           .add((data.dateOfWeight.millisecondsSinceEpoch / 1000).round());
-    for (WeightData data in chartData) weight.add(data.weight);
+    for (WeightData data in chartDataAll) weight.add(data.weight);
 
     recentItems.add(timestamp);
     recentItems.add(timestampchosen);
@@ -151,9 +152,12 @@ class DatabaseHelperWeight {
     return await db.insert('weightDB', weightDB.toMap());
   }
 
-  Future<int> remove(double weight) async {
+  Future<int> remove(WeightData weight) async {
     Database db = await weightInstance.database;
-    return await db.delete('weightDB', where: 'weight=?', whereArgs: [weight]);
+    WeightDB weightDB = changeWeightObjDatatoDB(weight);
+    return await db.delete('weightDB',
+        where: 'weight = ? AND dateOfWeight = ?',
+        whereArgs: [weightDB.weight, weightDB.dateOfWeight]);
   }
 }
 
@@ -164,8 +168,11 @@ void removeChartData(int index) {
     var bDate = b.dateOfWeight;
     return -aDate.compareTo(bDate);
   });
+  DatabaseHelperWeight.weightInstance.remove(WeightData(
+      chartData[index].timestamp,
+      chartData[index].dateOfWeight,
+      chartData[index].weight));
   chartData.removeAt(index);
-  DatabaseHelperWeight.weightInstance.remove(chartData[index].weight);
 }
 
 void addChartItem(DateTime dateTime, double weight) {

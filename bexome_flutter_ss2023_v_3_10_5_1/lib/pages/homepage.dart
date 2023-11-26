@@ -64,7 +64,7 @@ class _StatsPageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     dataToJson.getDB();
-
+    //TODO: FitData
     print(dataToJson.getAllFitData());
 
     print("Inside homepage.dart - build() ...");

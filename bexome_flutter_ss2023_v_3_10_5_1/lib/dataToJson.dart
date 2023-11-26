@@ -163,7 +163,7 @@ class DataToJson {
   }
 
   bool getDB() {
-    getSaveFitData();
+    // getSaveFitData();
     getFoodDB();
     getWeightDB();
     getCurrentLocation();

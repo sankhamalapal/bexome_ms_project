@@ -22,12 +22,13 @@ void main() async {
   Food_db_helper db = new Food_db_helper();
   db.init_DB();
   dataToJson.getDB();
+  //TODO: FitData
   dataToJson.getAllFitData();
   Directory documentDirectory = await getApplicationDocumentsDirectory();
   int lastPauseTimestamp = 0;
   String pause = "";
   try {
-    pause = join(documentDirectory.path, 'pause.txt');
+    pause = join(documentDirectory.path, 'DataSent.txt');
     File(pause).readAsString().then((String contents) {
       print(contents);
       int time = int.parse(contents.split(" ").last.toString());

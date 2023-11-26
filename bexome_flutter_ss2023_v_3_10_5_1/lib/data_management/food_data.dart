@@ -72,6 +72,9 @@ class FoodDB {
 
 //list with all entered entries -> one list object contains all the points of the FoodData class
 List<FoodData> chartData = [];
+List<FoodData> chartDataAll = [];
+List<FoodData> chartDataFav = [];
+List<FoodData> chartDataRecent = [];
 
 class DatabaseHelper {
   DatabaseHelper._privateConstructor();
@@ -155,8 +158,8 @@ class DatabaseHelper {
 
     List<FoodDB> foodList =
         foods.isNotEmpty ? foods.map((e) => FoodDB.fromMap(e)).toList() : [];
-    chartData = changeFoodObjDBtoDataList(foodList);
-    for (FoodData data in chartData) recentItems.add(data.foodName);
+    chartDataRecent = changeFoodObjDBtoDataList(foodList);
+    for (FoodData data in chartDataRecent) recentItems.add(data.foodName);
     recentItems = recentItems.toSet().toList();
     return recentItems;
   }
@@ -169,8 +172,8 @@ class DatabaseHelper {
         orderBy: 'logDate DESC', where: 'isFav=?', limit: 50, whereArgs: [1]);
     List<FoodDB> foodList =
         foods.isNotEmpty ? foods.map((e) => FoodDB.fromMap(e)).toList() : [];
-    chartData = changeFoodObjDBtoDataList(foodList);
-    for (FoodData data in chartData) recentItems.add(data.foodName);
+    chartDataFav = changeFoodObjDBtoDataList(foodList);
+    for (FoodData data in chartDataFav) recentItems.add(data.foodName);
     recentItems = recentItems.toSet().toList();
     return recentItems;
   }
@@ -204,14 +207,14 @@ class DatabaseHelper {
         await db.query('food', where: whereString, whereArgs: whereArguments);
     List<FoodDB> foodList =
         foods.isNotEmpty ? foods.map((e) => FoodDB.fromMap(e)).toList() : [];
-    chartData = changeFoodObjDBtoDataList(foodList);
-    for (FoodData data in chartData)
+    chartDataAll = changeFoodObjDBtoDataList(foodList);
+    for (FoodData data in chartDataAll)
       timestamp.add((data.dateOfFood.millisecondsSinceEpoch / 1000).round());
-    for (FoodData data in chartData)
+    for (FoodData data in chartDataAll)
       timestampchosen
           .add((data.dateOfFoodLog.millisecondsSinceEpoch / 1000).round());
-    for (FoodData data in chartData) foodId.add(data.code);
-    for (FoodData data in chartData) portion.add(data.portion);
+    for (FoodData data in chartDataAll) foodId.add(data.code);
+    for (FoodData data in chartDataAll) portion.add(data.portion);
 
     recentItems.add(timestamp);
     recentItems.add(timestampchosen);

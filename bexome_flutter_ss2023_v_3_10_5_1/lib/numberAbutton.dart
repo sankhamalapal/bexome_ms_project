@@ -122,8 +122,7 @@ class _NumberInputWithIncrementDecrementState
     setState(() {
       try {
         water
-            ? addWaterChartItem(
-                foodTime, amountOfNutrition / amountOfNutritionOld)
+            ? addWaterChartItem(foodTime, amountOfNutrition)
             : addFoodChartItem(foodId, foodTime, amountOfNutrition, cal, prot,
                 selectedNutrition, fats, carbohydrats, isFav ? 1 : 0);
         saved = true;
