@@ -46,7 +46,7 @@ class FoodDB {
       json['timestamp'],
       json['logDate'],
       json['foodId'],
-      json['portion'],
+      json['serving_quantity'],
       json['kcal'],
       json['protein'],
       json['foodName'],
@@ -59,7 +59,7 @@ class FoodDB {
       'timestamp': timestamp,
       'logDate': logDate,
       'foodId': foodId,
-      'portion': portion,
+      'serving_quantity': portion,
       'kcal': kcal,
       'protein': protein,
       'foodName': foodName,
@@ -133,7 +133,7 @@ class DatabaseHelper {
   Future<Database> get database async => _database ??= await _initDtabase();
   Future<Database> _initDtabase() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentDirectory.path, 'food.db');
+    String path = join(documentDirectory.path, 'bexome_app_data.db');
     print('Database found in path : ' + path);
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
@@ -143,12 +143,30 @@ class DatabaseHelper {
         timestamp INT,
         logDate INT, 
         foodId TEXT,
-        portion REAL,
+        serving_quantity REAL,
         kcal REAL,
         protein REAL,
         foodName TEXT,
         fats REAL,
         carbohydrates REAL, isFav INTEGER)''');
+
+    await db.execute('''CREATE TABLE weight(
+        timestamp INT,
+        dateOfWeight INT, 
+        weight REAL
+        )''');
+
+    await db.execute('''CREATE TABLE user(
+      gender TEXT,
+      age TEXT,
+      weight TEXT,
+      streetNr TEXT,
+      postalcode TEXT,
+      town TEXT,
+      workStreet TEXT,
+      workPostalCode TEXT,
+      workTown TEXT,
+      studyID TEXT)''');
   }
 
   Future<List> getRecentFood() async {
@@ -166,16 +184,16 @@ class DatabaseHelper {
 
   Future<List> getFavFood() async {
     Database db = await instance.database;
-    List recentItems = [];
+    List favItems = [];
 
     var foods = await db.query('food',
         orderBy: 'logDate DESC', where: 'isFav=?', limit: 50, whereArgs: [1]);
     List<FoodDB> foodList =
         foods.isNotEmpty ? foods.map((e) => FoodDB.fromMap(e)).toList() : [];
     chartDataFav = changeFoodObjDBtoDataList(foodList);
-    for (FoodData data in chartDataFav) recentItems.add(data.foodName);
-    recentItems = recentItems.toSet().toList();
-    return recentItems;
+    for (FoodData data in chartDataFav) favItems.add(data.foodName);
+    favItems = favItems.toSet().toList();
+    return favItems;
   }
 
   Future<List> getAllFoods() async {

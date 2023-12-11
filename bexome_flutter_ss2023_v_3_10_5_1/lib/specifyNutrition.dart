@@ -178,7 +178,7 @@ class _SpecifyNutritionState extends State<SpecifyNutrition> {
                                           Expanded(
                                             flex: 1,
                                             child: new Image.asset(
-                                              'assets/chocolate.png',
+                                              'assets/cake.png',
                                               // width: 50,
                                               // height: 50,
                                               fit: BoxFit.scaleDown,
@@ -219,7 +219,7 @@ class _SpecifyNutritionState extends State<SpecifyNutrition> {
                                           Expanded(
                                             flex: 1,
                                             child: new Image.asset(
-                                              'assets/meat.png',
+                                              'assets/fish.png',
                                               // width: 50,
                                               // height: 50,
                                               fit: BoxFit.scaleDown,

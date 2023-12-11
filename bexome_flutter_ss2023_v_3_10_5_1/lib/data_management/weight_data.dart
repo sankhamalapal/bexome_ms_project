@@ -78,17 +78,40 @@ class DatabaseHelperWeight {
   Future<Database> get database async => _database ??= await _initDtabase();
   Future<Database> _initDtabase() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentDirectory.path, 'weightDB.db');
+    String path = join(documentDirectory.path, 'bexome_app_data.db');
     print('Database found in path : ' + path);
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
   Future _onCreate(Database db, int version) async {
-    await db.execute('''CREATE TABLE weightDB(
+    await db.execute('''CREATE TABLE food(
+        timestamp INT,
+        logDate INT, 
+        foodId TEXT,
+        portion REAL,
+        kcal REAL,
+        protein REAL,
+        foodName TEXT,
+        fats REAL,
+        carbohydrates REAL, isFav INTEGER)''');
+
+    await db.execute('''CREATE TABLE weight(
         timestamp INT,
         dateOfWeight INT, 
         weight REAL
         )''');
+
+    await db.execute('''CREATE TABLE user(
+      gender TEXT,
+      age TEXT,
+      weight TEXT,
+      streetNr TEXT,
+      postalcode TEXT,
+      town TEXT,
+      workStreet TEXT,
+      workPostalCode TEXT,
+      workTown TEXT,
+      studyID TEXT)''');
   }
 
   Future<List> getAllWeights() async {
@@ -115,8 +138,8 @@ class DatabaseHelperWeight {
     List<int> whereArguments = [lastTimestamp];
 
     List recentItems = [];
-    var weights = await db.query('weightDB',
-        where: whereString, whereArgs: whereArguments);
+    var weights =
+        await db.query('weight', where: whereString, whereArgs: whereArguments);
     List<WeightDB> weightList = weights.isNotEmpty
         ? weights.map((e) => WeightDB.fromMap(e)).toList()
         : [];
@@ -138,7 +161,7 @@ class DatabaseHelperWeight {
 
   Future<List<WeightData>> getWeight() async {
     Database db = await weightInstance.database;
-    var weights = await db.query('weightDB', orderBy: 'dateOfWeight');
+    var weights = await db.query('weight', orderBy: 'dateOfWeight');
     List<WeightDB> weightList = weights.isNotEmpty
         ? weights.map((e) => WeightDB.fromMap(e)).toList()
         : [];
@@ -149,13 +172,13 @@ class DatabaseHelperWeight {
   Future<int> add(WeightData weight) async {
     Database db = await weightInstance.database;
     WeightDB weightDB = changeWeightObjDatatoDB(weight);
-    return await db.insert('weightDB', weightDB.toMap());
+    return await db.insert('weight', weightDB.toMap());
   }
 
   Future<int> remove(WeightData weight) async {
     Database db = await weightInstance.database;
     WeightDB weightDB = changeWeightObjDatatoDB(weight);
-    return await db.delete('weightDB',
+    return await db.delete('weight',
         where: 'weight = ? AND dateOfWeight = ?',
         whereArgs: [weightDB.weight, weightDB.dateOfWeight]);
   }

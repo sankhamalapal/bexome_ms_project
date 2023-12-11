@@ -1,3 +1,5 @@
+import 'package:bexome_flutter_ss2023_v_3_10_5_1/main.dart';
+
 import '../Translation/translation.dart';
 import '../scaff.dart';
 import 'package:flutter/material.dart';
@@ -28,11 +30,32 @@ class _MyAccountState extends State<MyAccount> {
   String? workStreet;
   String? workPostalCode;
   String? workTown;
+  late TextEditingController ageController;
+  late TextEditingController streetNrController;
+  late TextEditingController postalcodeController;
+  late TextEditingController townController;
+  late TextEditingController workStreetController;
+  late TextEditingController workPostalCodeController;
+  late TextEditingController workTownController;
 
   final _formKey = GlobalKey<FormState>();
   void setCurrentUser() {
     setState(() {
       usernow = getCurrentUser();
+      ageController =
+          TextEditingController(text: (usernow.age != null) ? usernow.age : "");
+      streetNrController = TextEditingController(
+          text: (usernow.streetNr != null) ? usernow.streetNr : "");
+      postalcodeController = TextEditingController(
+          text: (usernow.postalcode != null) ? usernow.postalcode : "");
+      townController = TextEditingController(
+          text: (usernow.town != null) ? usernow.town : "");
+      workStreetController = TextEditingController(
+          text: (usernow.workStreet != null) ? usernow.workStreet : "");
+      workPostalCodeController = TextEditingController(
+          text: (usernow.workPostalCode != null) ? usernow.workPostalCode : "");
+      workTownController = TextEditingController(
+          text: (usernow.workTown != null) ? usernow.workTown : "");
     });
   }
 
@@ -92,7 +115,6 @@ class _MyAccountState extends State<MyAccount> {
                             updateUserData(
                                 gender!,
                                 age!,
-                                weight!,
                                 streetNr!,
                                 postalcode!,
                                 town!,
@@ -100,6 +122,7 @@ class _MyAccountState extends State<MyAccount> {
                                 workPostalCode!,
                                 workTown!);
                             RootApp.instance.page = 0;
+
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -208,7 +231,7 @@ class _MyAccountState extends State<MyAccount> {
                         // TextFormField to enter the Age
 
                         TextFormField(
-                          initialValue: usernow.age,
+                          controller: ageController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             isDense: true,
@@ -239,39 +262,6 @@ class _MyAccountState extends State<MyAccount> {
 
                         const SizedBox(height: 15),
 
-                        // TextFormField to enter the weight
-
-                        TextFormField(
-                          initialValue: usernow.weight,
-                          keyboardType: TextInputType.number,
-                          decoration: InputDecoration(
-                            isDense: true,
-                            hintText:
-                                (usernow.weight != null && usernow.weight != "")
-                                    ? usernow.weight
-                                    : translate.getTranslation(
-                                        context, 'enter_weight_kg'),
-                            label: Text(
-                              translate.getTranslation(context, 'weight_kg'),
-                              style: TextStyle(fontSize: 16),
-                            ),
-                            border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(15),
-                            ),
-                          ),
-                          // if no valid value is chosen then print the Text
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return translate.getTranslation(
-                                  context, 'pls_enter_weight');
-                            }
-                            return null;
-                          },
-                          onSaved: (value) {
-                            weight = value.toString();
-                          },
-                        ),
-
                         const SizedBox(height: 30),
 
                         //
@@ -294,7 +284,7 @@ class _MyAccountState extends State<MyAccount> {
                         // TextFormField to enter the residential address
 
                         TextFormField(
-                          initialValue: usernow.streetNr,
+                          controller: streetNrController,
                           keyboardType: TextInputType.streetAddress,
                           decoration: InputDecoration(
                             isDense: true,
@@ -327,7 +317,7 @@ class _MyAccountState extends State<MyAccount> {
                         // TextFormField to enter the postal code
 
                         TextFormField(
-                          initialValue: usernow.postalcode,
+                          controller: postalcodeController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             isDense: true,
@@ -365,7 +355,7 @@ class _MyAccountState extends State<MyAccount> {
                         // TextFormField to enter the city
 
                         TextFormField(
-                          initialValue: usernow.town,
+                          controller: townController,
                           keyboardType: TextInputType.name,
                           decoration: InputDecoration(
                             isDense: true,
@@ -416,7 +406,7 @@ class _MyAccountState extends State<MyAccount> {
                         // TextFormField to enter the work address
 
                         TextFormField(
-                          initialValue: usernow.workStreet,
+                          controller: workStreetController,
                           keyboardType: TextInputType.streetAddress,
                           decoration: InputDecoration(
                             isDense: true,
@@ -443,7 +433,7 @@ class _MyAccountState extends State<MyAccount> {
                         // TextFormField to enter the working postal code
 
                         TextFormField(
-                          initialValue: usernow.workPostalCode,
+                          controller: workPostalCodeController,
                           keyboardType: TextInputType.number,
                           decoration: InputDecoration(
                             isDense: true,
@@ -469,7 +459,7 @@ class _MyAccountState extends State<MyAccount> {
                         // TextFormField to enter the residential city
 
                         TextFormField(
-                          initialValue: usernow.workTown,
+                          controller: workTownController,
                           keyboardType: TextInputType.name,
                           decoration: InputDecoration(
                             isDense: true,

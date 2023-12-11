@@ -18,13 +18,22 @@ void main() async {
   DataToJson dataToJson = DataToJson();
 
   WidgetsFlutterBinding.ensureInitialized();
+  Directory documentDirectory = await getApplicationDocumentsDirectory();
+
+  String pathTime = join(documentDirectory.path, 'time.txt');
+  var fileTime = File(pathTime);
+  var sinkTime = fileTime.openWrite();
+  final startTime = DateTime.now();
+  sinkTime.write('OPEN:  ${startTime}\n');
+  sinkTime.close();
+
   runApp(MyApp());
+
   Food_db_helper db = new Food_db_helper();
   db.init_DB();
   dataToJson.getDB();
   //TODO: FitData
   dataToJson.getAllFitData();
-  Directory documentDirectory = await getApplicationDocumentsDirectory();
   int lastPauseTimestamp = 0;
   String pause = "";
   try {
@@ -72,6 +81,19 @@ void main() async {
       });
     }
   });
+}
+
+@override
+Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+  if (state == AppLifecycleState.detached) {
+    Directory documentDirectory = await getApplicationDocumentsDirectory();
+    String pathTime = join(documentDirectory.path, 'time.txt');
+    var fileTime = File(pathTime);
+    var sinkTime = fileTime.openWrite(mode: FileMode.append);
+    final closeTime = DateTime.now();
+    sinkTime.write('CLOSE:  ${closeTime}\n');
+    sinkTime.close();
+  }
 }
 
 class MyApp extends StatefulWidget {

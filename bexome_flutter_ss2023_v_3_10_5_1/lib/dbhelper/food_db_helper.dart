@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/services.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -90,43 +91,52 @@ Future<List> read_food_DB_all(String filterString) async {
       "carbohydrates": element["carbohydrates"],
       "fiber": element["fiber"],
       "fat": element["fat"],
-      "serving_quantity": element["serving_quantity"]
+      "serving_quantity": nullCheck(element["serving_quantity"])
     };
   });
 
   return onlyProductNamesList;
 }
 
+double nullCheck(var item) {
+  if (item != null) {
+    return item;
+  } else {
+    return 100.0;
+  }
+}
+
 Future<List> read_food_details(String foodSelected) async {
-  final dbPath = await getDatabasesPath();
-  final path = join(dbPath, "food_db_merged.db");
+  Directory documentDirectory = await getApplicationDocumentsDirectory();
+  String path = join(documentDirectory.path, 'bexome_app_data.db');
   Database db = await openDatabase(path);
   // Food_db_helper.recentfoodMap = {};
 
-  List<Map<String, Object?>> result = await db.query('foods_merged',
+  List<Map<String, Object?>> result = await db.query('food',
       columns: [
-        'code',
-        'product_name',
-        'energy',
-        'fat',
-        'proteins',
+        'timestamp',
+        'foodId',
+        'foodName',
+        'kcal',
+        'fats',
+        'protein',
         'carbohydrates',
-        'fiber',
         'serving_quantity'
       ],
-      where: 'product_name=?',
-      whereArgs: [foodSelected]);
+      where: 'foodName=?',
+      whereArgs: [foodSelected],
+      orderBy: 'timestamp DESC');
 
   List onlySelectedProductNamesList = [];
-  Food_db_helper.foodDetailsMap[result.first["product_name"]] = {
-    "code": result.first["code"],
-    "product_name": result.first["product_name"],
-    "energy": result.first["energy"],
-    "proteins": result.first["proteins"],
+  Food_db_helper.foodDetailsMap[result.first["foodName"]] = {
+    "code": result.first["foodId"],
+    "product_name": result.first["foodName"],
+    "energy": result.first["kcal"],
+    "proteins": result.first["protein"],
     "carbohydrates": result.first["carbohydrates"],
-    "fiber": result.first["fiber"],
-    "fat": result.first["fat"],
-    "serving_quantity": result.first["serving_quantity"]
+    "fiber": 0.0,
+    "fat": result.first["fats"],
+    "serving_quantity": nullCheck(result.first["serving_quantity"])
   };
 
   return onlySelectedProductNamesList;
@@ -164,7 +174,7 @@ Future<List> readDBallSearching(String filterString) async {
       "carbohydrates": element["carbohydrates"],
       "fiber": element["fiber"],
       "fat": element["fat"],
-      "serving_quantity": element["serving_quantity"]
+      "serving_quantity": nullCheck(element["serving_quantity"])
     };
   });
 
@@ -204,7 +214,7 @@ Future<List> readDBFavFood() async {
       "carbohydrates": element["carbohydrates"],
       "fiber": element["fiber"],
       "fat": element["fat"],
-      "serving_quantity": element["serving_quantity"]
+      "serving_quantity": nullCheck(element["serving_quantity"])
     };
   });
 
