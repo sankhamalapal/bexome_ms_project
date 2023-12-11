@@ -8,7 +8,6 @@ class UserData {
   UserData(
       this.gender,
       this.age,
-      this.weight,
       this.streetNr,
       this.postalcode,
       this.town,
@@ -19,7 +18,6 @@ class UserData {
 
   String? gender;
   String? age;
-  String? weight;
   String? streetNr;
   String? postalcode;
   String? town;
@@ -34,13 +32,12 @@ class UserData {
 //   return usernow;
 // }
 UserData usernow =
-    new UserData(null, null, null, null, null, null, null, null, null, null);
+    new UserData(null, null, null, null, null, null, null, null, null);
 
 // Update the UserData used in the myaccount page
 void updateUserData(
   String gender,
   String age,
-  String weight,
   String streetNr,
   String postalcode,
   String town,
@@ -50,8 +47,8 @@ void updateUserData(
 ) {
   //String? storedID = getStudyID();
   String storedID = "20";
-  usernow = UserData(gender, age, weight, streetNr, postalcode, town,
-      workStreet, workPostalCode, workTown, storedID);
+  usernow = UserData(gender, age, streetNr, postalcode, town, workStreet,
+      workPostalCode, workTown, storedID);
   DatabaseHelper.instance.getUser();
   DatabaseHelper.instance.remove();
   DatabaseHelper.instance.add(usernow);
@@ -75,7 +72,6 @@ getStudyID() {
 class UserDB {
   final String gender;
   final String age;
-  final String weight;
   final String streetNr;
   final String postalcode;
   final String town;
@@ -83,22 +79,12 @@ class UserDB {
   final String workPostalCode;
   final String workTown;
   final String studyID;
-  UserDB(
-      this.gender,
-      this.age,
-      this.weight,
-      this.streetNr,
-      this.postalcode,
-      this.town,
-      this.workStreet,
-      this.workPostalCode,
-      this.workTown,
-      this.studyID);
+  UserDB(this.gender, this.age, this.streetNr, this.postalcode, this.town,
+      this.workStreet, this.workPostalCode, this.workTown, this.studyID);
 
   factory UserDB.fromMap(Map<String, dynamic> json) => new UserDB(
       json['gender'],
       json['age'],
-      json['weight'],
       json['streetNr'],
       json['postalcode'],
       json['town'],
@@ -111,7 +97,6 @@ class UserDB {
     return {
       'gender': gender,
       'age': age,
-      'weight': weight,
       'streetNr': streetNr,
       'postalcode': postalcode,
       'town': town,
@@ -135,7 +120,6 @@ class DatabaseHelper {
     UserDB db = UserDB(
         user.gender!,
         user.age!,
-        user.weight!,
         user.streetNr!,
         user.postalcode!,
         user.town!,
@@ -150,7 +134,6 @@ class DatabaseHelper {
     UserData db = UserData(
         user.gender,
         user.age,
-        user.weight,
         user.streetNr,
         user.postalcode,
         user.town,
@@ -164,16 +147,32 @@ class DatabaseHelper {
   Future<Database> get database async => _database ??= await _initDtabase();
   Future<Database> _initDtabase() async {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
-    String path = join(documentDirectory.path, 'user.db');
+    String path = join(documentDirectory.path, 'bexome_app_data.db');
     print('Database found in path : ' + path);
     return await openDatabase(path, version: 1, onCreate: _onCreate);
   }
 
   Future _onCreate(Database db, int version) async {
+    await db.execute('''CREATE TABLE food(
+        timestamp INT,
+        logDate INT, 
+        foodId TEXT,
+        portion REAL,
+        kcal REAL,
+        protein REAL,
+        foodName TEXT,
+        fats REAL,
+        carbohydrates REAL, isFav INTEGER)''');
+
+    await db.execute('''CREATE TABLE weight(
+        timestamp INT,
+        dateOfWeight INT, 
+        weight REAL
+        )''');
+
     await db.execute('''CREATE TABLE user(
       gender TEXT,
       age TEXT,
-      weight TEXT,
       streetNr TEXT,
       postalcode TEXT,
       town TEXT,
@@ -192,7 +191,7 @@ class DatabaseHelper {
     if (userList.isNotEmpty)
       currUser = userList[userList.length - 1];
     else
-      currUser = new UserDB("", "", "", "", "", "", "", "", "", "");
+      currUser = new UserDB("", "", "", "", "", "", "", "", "");
 
     usernow = changeUserObjDBtoData(currUser);
     return usernow;

@@ -13,7 +13,7 @@ class DataSearch extends SearchDelegate<String> {
   static double fat = 0;
   static double carbohydrates = 0;
   final DateTime dateTime_food;
-  final double portion = 100;
+  static double portion = 100;
   static bool saved = false;
   bool gotDB = false;
   bool gotRecentFoodDB = false;
@@ -89,9 +89,8 @@ class DataSearch extends SearchDelegate<String> {
                     clickedWater = false;
                   }
 
-                  suggestionList[index].toLowerCase().contains(translate
-                          .getTranslation(context, "water")
-                          .toLowerCase())
+                  suggestionList[index].toLowerCase().contains("water") ||
+                          suggestionList[index].toLowerCase().contains("wasser")
                       ? clickedWater = true
                       : updateFood_Water();
 
@@ -112,6 +111,9 @@ class DataSearch extends SearchDelegate<String> {
                             .foodMapMap[suggestionList[index]]["carbohydrates"])
                         .toDouble();
                     saved = true;
+                    portion = (Food_db_helper.foodMapMap[suggestionList[index]]
+                            ["serving_quantity"])
+                        .toDouble();
                   } catch (e) {
                     calories = 0;
                     protein = 0;

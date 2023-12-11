@@ -296,7 +296,7 @@ class _NumberInputWithIncrementDecrementState
                 ),
                 controller: _controller,
                 keyboardType: TextInputType.numberWithOptions(
-                  decimal: false,
+                  decimal: true,
                   signed: false,
                 ),
               ),

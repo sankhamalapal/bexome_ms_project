@@ -78,8 +78,8 @@ flutter:
     - lib/Translation/de.json
     - lib/Translation/en.json
     - assets/apple.png
-    - assets/chocolate.png
-    - assets/meat.png
+    - assets/cake.png
+    - assets/fish.png
     - assets/pizza.png
   # assets:
   #   - images/a_dot_burr.jpeg

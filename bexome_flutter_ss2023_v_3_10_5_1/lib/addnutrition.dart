@@ -26,7 +26,7 @@ class _AddNutritionState extends State<AddNutrition> {
   static double protein = 0;
   static double fat = 0;
   static double carbohydrates = 0;
-  final double portion = 100;
+  static double portion = 100;
   static bool saved = false;
   late double userWeight;
   DateTime dateTime = DateTime.now();
@@ -37,6 +37,9 @@ class _AddNutritionState extends State<AddNutrition> {
   bool gotFavFoodDB = false;
   List foodFavList = [];
   bool visible = false;
+  static Map favfoodDetailsMap = {};
+  static Map recentfoodDetailsMap = {};
+
   final List<bool> _selectedMeals = <bool>[true, false];
   static const List<Widget> mealsEN = <Widget>[
     Padding(
@@ -349,9 +352,23 @@ class _AddNutritionState extends State<AddNutrition> {
     if (getlistfromDB) {
       if (index == 0) {
         getFavFoodDB();
+
+        for (var food in foodFavList) {
+          if (!favfoodDetailsMap.keys.contains(food)) {
+            read_food_details(food);
+            favfoodDetailsMap.addAll(Food_db_helper.foodDetailsMap);
+          }
+        }
         return getMealList(foodFavList, index);
       } else {
         getRecentFoodDB();
+        for (var food in foodRecentList) {
+          if (!favfoodDetailsMap.keys.contains(food)) {
+            read_food_details(food);
+            recentfoodDetailsMap.addAll(Food_db_helper.foodDetailsMap);
+          }
+        }
+
         return getMealList(foodRecentList, index);
       }
     }
@@ -379,8 +396,11 @@ class _AddNutritionState extends State<AddNutrition> {
               onPressed: () {
                 foodList[index] = foodList[index].toLowerCase();
 
-                read_food_details(foodList[index]);
-
+                if (index == 0) {
+                  Food_db_helper.foodDetailsMap.addAll(favfoodDetailsMap);
+                } else {
+                  Food_db_helper.foodDetailsMap.addAll(recentfoodDetailsMap);
+                }
                 clickedFood = foodList[index];
                 foodSaved = clickedFood;
                 if (Food_db_helper.foodDetailsMap.keys.contains(clickedFood)) {
@@ -399,6 +419,9 @@ class _AddNutritionState extends State<AddNutrition> {
                       .toDouble();
 
                   saved = true;
+                  portion = (Food_db_helper.foodDetailsMap[foodList[index]]
+                          ["serving_quantity"])
+                      .toDouble();
 
                   Navigator.push(
                     context,
