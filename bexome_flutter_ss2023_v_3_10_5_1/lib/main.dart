@@ -15,9 +15,10 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:http/http.dart' as http;
 
 void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+
   DataToJson dataToJson = DataToJson();
 
-  WidgetsFlutterBinding.ensureInitialized();
   Directory documentDirectory = await getApplicationDocumentsDirectory();
 
   String pathTime = join(documentDirectory.path, 'time.txt');

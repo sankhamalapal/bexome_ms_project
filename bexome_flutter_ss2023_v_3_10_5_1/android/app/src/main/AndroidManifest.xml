@@ -22,7 +22,7 @@
 <!--        </intent>-->
 <!--    </queries>-->
     <application
-        android:label="bexome_flutter_ss2023_v_3_10_5_1"
+        android:label="BEXOME"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
