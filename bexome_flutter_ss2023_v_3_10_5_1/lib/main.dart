@@ -18,13 +18,15 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   DataToJson dataToJson = DataToJson();
-
   Directory documentDirectory = await getApplicationDocumentsDirectory();
-
+  print("started");
   String pathTime = join(documentDirectory.path, 'time.txt');
+  print(pathTime);
   var fileTime = File(pathTime);
   var sinkTime = fileTime.openWrite();
-  final startTime = DateTime.now();
+  final startTimeUTC = DateTime.now().toUtc();
+  int startTime = (startTimeUTC.millisecondsSinceEpoch / 1000).round();
+
   sinkTime.write('OPEN:  ${startTime}\n');
   sinkTime.close();
 
@@ -51,7 +53,7 @@ void main() async {
     print("Executed after 1 minutes");
 
     dataToJson.getDB();
-    final now = DateTime.now();
+    final now = DateTime.now().toUtc();
     // final yesterday = now.subtract(Duration(hours: 24));
 
     int time = (now.millisecondsSinceEpoch / 1000).round();
@@ -84,19 +86,6 @@ void main() async {
   });
 }
 
-@override
-Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-  if (state == AppLifecycleState.detached) {
-    Directory documentDirectory = await getApplicationDocumentsDirectory();
-    String pathTime = join(documentDirectory.path, 'time.txt');
-    var fileTime = File(pathTime);
-    var sinkTime = fileTime.openWrite(mode: FileMode.append);
-    final closeTime = DateTime.now();
-    sinkTime.write('CLOSE:  ${closeTime}\n');
-    sinkTime.close();
-  }
-}
-
 class MyApp extends StatefulWidget {
   @override
   State<MyApp> createState() => _MyAppState();
@@ -107,7 +96,7 @@ class MyApp extends StatefulWidget {
   }
 }
 
-class _MyAppState extends State<MyApp> {
+class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
   // This widget is the root of your application.
   Locale? _locale;
 
@@ -118,6 +107,51 @@ class _MyAppState extends State<MyApp> {
   }
 
   @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    WidgetsBinding.instance.addObserver(this);
+  }
+
+  @override
+  void dispose() {
+    // TODO: implement dispose
+    super.dispose();
+    WidgetsBinding.instance.removeObserver(this);
+  }
+
+  @override
+  Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
+    if (state == AppLifecycleState.inactive) {
+      Directory documentDirectory = await getApplicationDocumentsDirectory();
+      String pathTime = join(documentDirectory.path, 'time.txt');
+      var fileTime = File(pathTime);
+      var sinkTime = fileTime.openWrite(mode: FileMode.append);
+      final closeTimeUTC = DateTime.now().toUtc();
+      int closeTime = (closeTimeUTC.millisecondsSinceEpoch / 1000).round();
+      sinkTime.write('CLOSE:  ${closeTime}\n');
+      sinkTime.close();
+    }
+    if (state == AppLifecycleState.resumed) {
+      Directory documentDirectory = await getApplicationDocumentsDirectory();
+      String pathTime = join(documentDirectory.path, 'time.txt');
+      var fileTime = File(pathTime);
+      String content = await fileTime.readAsString();
+
+      // Replace the word
+      content = content.replaceAll("CLOSE", "BACKGROUND");
+      // Write the updated content back to the file
+      await fileTime.writeAsString(content);
+      var sinkTime = fileTime.openWrite(mode: FileMode.append);
+      final resumeTimeUTC = DateTime.now().toUtc();
+      int resumeTime = (resumeTimeUTC.millisecondsSinceEpoch / 1000).round();
+
+      sinkTime.write('RESUMED:  ${resumeTime}\n');
+      sinkTime.close();
+    }
+  }
+
+  @override
   Widget build(BuildContext context) {
     // Future.delayed(Duration(seconds: 5), () async {
     //   print("Executed after 1 minutes");
@@ -125,10 +159,12 @@ class _MyAppState extends State<MyApp> {
     //       context, MaterialPageRoute(builder: (context) => RootApp()));
     // });
     return MaterialApp(
-      debugShowCheckedModeBanner: false, // hide debug Banner
+      debugShowCheckedModeBanner: false,
+      // hide debug Banner
       title: 'Bexome',
       locale: _locale,
-      home: RootApp(), // route to the homepage
+      home: RootApp(),
+      // route to the homepage
       localizationsDelegates: [
         // ... app-specific localization delegate[s] here
         GlobalMaterialLocalizations.delegate,

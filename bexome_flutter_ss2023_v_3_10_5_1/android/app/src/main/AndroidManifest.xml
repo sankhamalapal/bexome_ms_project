@@ -22,7 +22,7 @@
 <!--        </intent>-->
 <!--    </queries>-->
     <application
-        android:label="BEXOME"
+        android:label="Bexome"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
 
