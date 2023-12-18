@@ -207,12 +207,19 @@ class DatabaseHelper {
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentDirectory.path, 'DataSent.txt');
     int lastTimestamp = (yesterday.millisecondsSinceEpoch / 1000).round();
+    File file = File(path);
 
     try {
-      File(path).readAsString().then((String contents) {
-        int time = int.parse(contents.split(" ").last.toString());
-        lastTimestamp = time * 1000;
-      });
+      if (file.existsSync()) {
+        print('The file $file exists.');
+        File(path).readAsString().then((String contents) {
+          int time = int.parse(contents.split(" ").last.toString());
+          lastTimestamp = time * 1000;
+        });
+      } else {
+        print('The file $file does not exist.');
+        lastTimestamp = 0;
+      }
     } catch (error) {
       print("Exception in reading the last timestamp: $error");
     }

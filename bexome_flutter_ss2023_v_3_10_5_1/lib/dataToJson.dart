@@ -174,21 +174,28 @@ class DataToJson {
   void formJson() {
     Map<String, dynamic> meal = mealToJson();
     Map<String, dynamic> weight = weightToJson();
-    Map<String, dynamic> fit = fitToJson();
+    //Map<String, dynamic> fit = fitToJson();
     Map<String, dynamic> loc = currLocToJson();
     Map<String, dynamic> weather = currWeatherToJson();
+
+    // _message = {
+    //   "Meal": meal,
+    //   "Weight": weight,
+    //   "Currentplace": loc,
+    //   "Fit": fit,
+    //   "Weatherlocation": weather
+    // };
 
     _message = {
       "Meal": meal,
       "Weight": weight,
       "Currentplace": loc,
-      "Fit": fit,
       "Weatherlocation": weather
     };
     if (meal.isEmpty) _message.remove("Meal");
     if (weight.isEmpty) _message.remove("Weight");
     if (loc.isEmpty) _message.remove("Currentplace");
-    if (fit.isEmpty) _message.remove("Fit");
+    // if (fit.isEmpty) _message.remove("Fit");
     if (weather.isEmpty) _message.remove("Weatherlocation");
     if (_message.isNotEmpty) {
       print(_message);
@@ -301,31 +308,6 @@ class DataToJson {
   Map<String, dynamic> currWeatherToJson() {
     getCurrentLocation();
     if (weather.isNotEmpty) {
-      // return {
-      //   "UID": "20",
-      //   "timestamp": [1234567890],
-      //   "description": ["description"],
-      //   "average_temperature": [1.2],
-      //   "max_temperature": [12.7],
-      //   "min_temperature": [14.6],
-      //   "temperature_feel": [13.3],
-      //   "max_temperature_feel": [1.3],
-      //   "min_temperature_feel": [4.6],
-      //   "precipitation": [92.0],
-      //   "sunrise": [1693197647],
-      //   "sunset": [1693246790],
-      //   "home": [0.0],
-      //   "work": [0.0],
-      //   "food_drinks": [0.0],
-      //   "outdoors": [0.0],
-      //   "sports": [0.0],
-      //   "mobility": [0.0],
-      //   "entertainment": [0.0],
-      //   "shopping": [0.0],
-      //   "health": [0.0],
-      //   "others": [0.0],
-      //   "unknown": [0.0]
-      // };
       return {
         "UID": "20",
         "timestamp": [(DateTime.now().millisecondsSinceEpoch / 1000).round()],

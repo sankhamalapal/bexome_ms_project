@@ -123,13 +123,22 @@ class DatabaseHelperWeight {
     final yesterday = now.subtract(Duration(hours: 24));
     Directory documentDirectory = await getApplicationDocumentsDirectory();
     String path = join(documentDirectory.path, 'DataSent.txt');
+
+    File file = File(path);
+
     int lastTimestamp = (yesterday.millisecondsSinceEpoch / 1000).round();
 
     try {
-      File(path).readAsString().then((String contents) {
-        int time = int.parse(contents.split(" ").last.toString());
-        lastTimestamp = time * 1000;
-      });
+      if (file.existsSync()) {
+        print('The file $file exists.');
+        File(path).readAsString().then((String contents) {
+          int time = int.parse(contents.split(" ").last.toString());
+          lastTimestamp = time * 1000;
+        });
+      } else {
+        print('The file $file does not exist.');
+        lastTimestamp = 0;
+      }
     } catch (error) {
       print("Exception in reading the last timestamp: $error");
     }

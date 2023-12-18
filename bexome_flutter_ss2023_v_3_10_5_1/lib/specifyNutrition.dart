@@ -178,7 +178,7 @@ class _SpecifyNutritionState extends State<SpecifyNutrition> {
                                           Expanded(
                                             flex: 1,
                                             child: new Image.asset(
-                                              'assets/cake.png',
+                                              'assets/pudding.png',
                                               // width: 50,
                                               // height: 50,
                                               fit: BoxFit.scaleDown,

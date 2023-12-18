@@ -23,7 +23,7 @@ void main() async {
   String pathTime = join(documentDirectory.path, 'time.txt');
   print(pathTime);
   var fileTime = File(pathTime);
-  var sinkTime = fileTime.openWrite();
+  var sinkTime = fileTime.openWrite(mode: FileMode.append);
   final startTimeUTC = DateTime.now().toUtc();
   int startTime = (startTimeUTC.millisecondsSinceEpoch / 1000).round();
 
@@ -36,16 +36,23 @@ void main() async {
   db.init_DB();
   dataToJson.getDB();
   //TODO: FitData
-  dataToJson.getAllFitData();
+  //dataToJson.getAllFitData();
   int lastPauseTimestamp = 0;
   String pause = "";
   try {
     pause = join(documentDirectory.path, 'DataSent.txt');
-    File(pause).readAsString().then((String contents) {
-      print(contents);
-      int time = int.parse(contents.split(" ").last.toString());
-      lastPauseTimestamp = time;
-    });
+    File file = File(pause);
+
+    if (file.existsSync()) {
+      print('The file $pause exists.');
+      File(pause).readAsString().then((String contents) {
+        print(contents);
+        int time = int.parse(contents.split(" ").last.toString());
+        lastPauseTimestamp = time;
+      });
+    } else {
+      print('The file $pause does not exist.');
+    }
   } catch (error) {
     print("Exception in reading the last timestamp: $error");
   }
@@ -57,7 +64,6 @@ void main() async {
     // final yesterday = now.subtract(Duration(hours: 24));
 
     int time = (now.millisecondsSinceEpoch / 1000).round();
-
     //pause button check
     if (lastPauseTimestamp == 0 || (time - lastPauseTimestamp) > 3600) {
       var str = jsonEncode(dataToJson.dbJson());
@@ -67,21 +73,30 @@ void main() async {
             'Content-Type': 'application/json; charset=UTF-8',
           },
           body: str);
-      print("Message Sending...\n" + str);
-      print(response.body);
+      if (response.statusCode != 200) {
+        print("Message not send...\n body =" + str);
+        print("StatusCode: " +
+            response.statusCode.toString() +
+            "  Reason Phrase :" +
+            response.reasonPhrase.toString() +
+            "\n");
+      } else {
+        print("Message Sending...\n" + str);
+        print(response.body);
 
-      print(str.toString());
-      String path = join(documentDirectory.path, 'DataSent.txt');
-      var file = File(path);
-      var sink = file.openWrite();
-      sink.write('LAST DATA SENT TO IES LAB AT TIMESTAMP:  ${time}\n');
+        print(str.toString());
+        String path = join(documentDirectory.path, 'DataSent.txt');
+        var file = File(path);
+        var sink = file.openWrite();
+        sink.write('LAST DATA SENT TO IES LAB AT TIMESTAMP:  ${time}\n');
 
-      // Close the IOSink to free system resources.
-      sink.close();
+        // Close the IOSink to free system resources.
+        sink.close();
 
-      File(path).readAsString().then((String contents) {
-        print(contents);
-      });
+        File(path).readAsString().then((String contents) {
+          print(contents);
+        });
+      }
     }
   });
 }
