@@ -105,7 +105,8 @@ class _NumberInputWithIncrementDecrementState
     }
     setState(() {
       try {
-        amountOfNutrition = double.parse(textWithoutComma);
+        amountOfNutrition =
+            double.parse(textWithoutComma) ?? amountOfNutritionOld;
 
         cal = cal / amountOfNutritionOld * amountOfNutrition;
         prot = prot / amountOfNutritionOld * amountOfNutrition;
@@ -119,6 +120,7 @@ class _NumberInputWithIncrementDecrementState
   }
 
   void savingData() {
+    amountOfNutrition = amountOfNutritionOld;
     setState(() {
       try {
         water
