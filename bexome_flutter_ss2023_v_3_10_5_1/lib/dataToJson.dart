@@ -15,7 +15,7 @@ class DataToJson {
   Map<String, dynamic> weather = {};
   Map<String, dynamic> fitList = {};
   Map<String, dynamic> _message = {};
-  HealthData health = HealthData();
+  // HealthData health = HealthData();
 
   void clearData() {
     foodList = [];
@@ -24,11 +24,11 @@ class DataToJson {
     _message = {};
   }
 
-  Map<String, dynamic> getAllFitData() {
-    health.fetchData();
-    fitList = health.getFitData();
-    return fitList;
-  }
+  // Map<String, dynamic> getAllFitData() {
+  //   health.fetchData();
+  //   fitList = health.getFitData();
+  //   return fitList;
+  // }
 
   Future<Position> _determineAccess() async {
     LocationPermission permission;
