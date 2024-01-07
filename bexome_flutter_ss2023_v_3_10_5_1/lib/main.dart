@@ -20,14 +20,24 @@ void main() async {
   DataToJson dataToJson = DataToJson();
   Directory documentDirectory = await getApplicationDocumentsDirectory();
   print("started");
-  String pathTime = join(documentDirectory.path, 'time.txt');
+  String pathTime = join(documentDirectory.path, 'time.json');
+  List<int> timestamp = [];
+  List<String> description = [];
   print(pathTime);
+
   var fileTime = File(pathTime);
-  var sinkTime = fileTime.openWrite(mode: FileMode.append);
+  var sinkTime = fileTime.openWrite();
   final startTimeUTC = DateTime.now().toUtc();
   int startTime = (startTimeUTC.millisecondsSinceEpoch / 1000).round();
-
-  sinkTime.write('OPEN:  ${startTime}\n');
+  timestamp.add(startTime);
+  description.add("OPEN".toString());
+  Map<String, dynamic> timesaved = {
+    "timestamp": timestamp,
+    "description": description
+  };
+  String jsonString = jsonEncode(timesaved);
+  print(jsonString);
+  sinkTime.write(jsonString);
   sinkTime.close();
 
   runApp(MyApp());
@@ -137,42 +147,47 @@ class _MyAppState extends State<MyApp> with WidgetsBindingObserver {
 
   @override
   Future<void> didChangeAppLifecycleState(AppLifecycleState state) async {
-    if (state == AppLifecycleState.inactive) {
+    if (state == AppLifecycleState.paused) {
       Directory documentDirectory = await getApplicationDocumentsDirectory();
-      String pathTime = join(documentDirectory.path, 'time.txt');
+      String pathTime = join(documentDirectory.path, 'time.json');
+      String fileContent = await File(pathTime).readAsString();
+      Map<String, dynamic> timesaved = jsonDecode(fileContent);
+
       var fileTime = File(pathTime);
-      var sinkTime = fileTime.openWrite(mode: FileMode.append);
+      var sinkTime = fileTime.openWrite();
       final closeTimeUTC = DateTime.now().toUtc();
       int closeTime = (closeTimeUTC.millisecondsSinceEpoch / 1000).round();
-      sinkTime.write('CLOSE:  ${closeTime}\n');
+      timesaved["timestamp"].add(closeTime);
+      timesaved["description"].add("CLOSE");
+      print(jsonEncode(timesaved));
+      sinkTime.write(jsonEncode(timesaved));
       sinkTime.close();
     }
     if (state == AppLifecycleState.resumed) {
       Directory documentDirectory = await getApplicationDocumentsDirectory();
-      String pathTime = join(documentDirectory.path, 'time.txt');
+      String pathTime = join(documentDirectory.path, 'time.json');
+
       var fileTime = File(pathTime);
       String content = await fileTime.readAsString();
-
       // Replace the word
       content = content.replaceAll("CLOSE", "BACKGROUND");
+      Map<String, dynamic> timesaved = jsonDecode(content);
+
       // Write the updated content back to the file
       await fileTime.writeAsString(content);
-      var sinkTime = fileTime.openWrite(mode: FileMode.append);
+      var sinkTime = fileTime.openWrite();
       final resumeTimeUTC = DateTime.now().toUtc();
       int resumeTime = (resumeTimeUTC.millisecondsSinceEpoch / 1000).round();
-
-      sinkTime.write('RESUMED:  ${resumeTime}\n');
+      timesaved["timestamp"].add(resumeTime);
+      timesaved["description"].add("RESUMED");
+      print(jsonEncode(timesaved));
+      sinkTime.write(jsonEncode(timesaved));
       sinkTime.close();
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    // Future.delayed(Duration(seconds: 5), () async {
-    //   print("Executed after 1 minutes");
-    //   Navigator.push(
-    //       context, MaterialPageRoute(builder: (context) => RootApp()));
-    // });
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       // hide debug Banner
