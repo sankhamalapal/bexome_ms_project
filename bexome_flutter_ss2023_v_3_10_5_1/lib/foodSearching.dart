@@ -57,18 +57,20 @@ class DataSearch extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     // show some result based on the selection of the user
-    return SpecifyNutrition(
-      foodId: clickedFoodId,
-      food: clickedFood,
-      water: clickedWater,
-      cal: calories,
-      prot: protein,
-      foodTime: dateTime_food,
-      fats: fat,
-      carbohydrates: carbohydrates,
-      port: portion,
-      saved: saved,
-    );
+    return clickedFood.isEmpty
+        ? getEmpty(context)
+        : SpecifyNutrition(
+            foodId: clickedFoodId,
+            food: clickedFood,
+            water: clickedWater,
+            cal: calories,
+            prot: protein,
+            foodTime: dateTime_food,
+            fats: fat,
+            carbohydrates: carbohydrates,
+            port: portion,
+            saved: saved,
+          );
   }
 
   @override
