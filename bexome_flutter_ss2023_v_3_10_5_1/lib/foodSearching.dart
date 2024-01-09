@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import 'Translation/translation.dart';
 import 'dbhelper/food_db_helper.dart';
 import 'specifyNutrition.dart';
@@ -151,8 +153,9 @@ class DataSearch extends SearchDelegate<String> {
         tmp.sort((a, b) => a.length.compareTo(b.length));
 
         value.sort((a, b) => a.length.compareTo(b.length));
+        Set distinctValue = value.toSet();
+        foodList = distinctValue.toList();
 
-        foodList = value;
         gotDB = true; //ensure to call it just once
       });
     }
