@@ -61,6 +61,18 @@ class _BarcodeScannerState extends State<BarcodeScanner> {
         automaticallyImplyLeading: false,
         actions: [
           IconButton(
+            onPressed: () {
+              Navigator.pop(context);
+            },
+            icon: Icon(
+              Icons.arrow_back_outlined,
+              color: Colors.white,
+            ),
+          ),
+          SizedBox(
+            width: 20,
+          ),
+          IconButton(
             color: Colors.white,
             icon: ValueListenableBuilder(
               valueListenable: cameraController.torchState,

@@ -15,7 +15,7 @@ class Food_db_helper {
   Future init_DB() async {
     final dbPath = await getDatabasesPath();
     print(dbPath);
-    final path = join(dbPath, "food_db_merged_updated.db");
+    final path = join(dbPath, "food_db-2024-01-09.db");
 
     /// db file name
 
@@ -44,7 +44,7 @@ class Food_db_helper {
 
       // Copy from asset
       ByteData data =
-          await rootBundle.load(join("assets", "food_db_merged_updated.db"));
+          await rootBundle.load(join("assets", "food_db-2024-01-09.db"));
 
       /// check if db or assets oder assets/db
       List<int> bytes =
@@ -62,7 +62,7 @@ class Food_db_helper {
 
 Future<List> read_food_DB_all(String filterString) async {
   final dbPath = await getDatabasesPath();
-  final path = join(dbPath, "food_db_merged_updated.db");
+  final path = join(dbPath, "food_db-2024-01-09.db");
   Database db = await openDatabase(path);
   List<Map<String, Object?>> result = await db.query('foods_merged',
       columns: [
@@ -144,7 +144,7 @@ Future<List> read_food_details(String foodSelected) async {
 
 Future<List> readDBallSearching(String filterString) async {
   final dbPath = await getDatabasesPath();
-  final path = join(dbPath, "food_db_merged_updated.db");
+  final path = join(dbPath, "food_db-2024-01-09.db");
   Database db = await openDatabase(path);
   List<Map<String, Object?>> result = await db.query('foods_merged',
       columns: [
@@ -183,7 +183,7 @@ Future<List> readDBallSearching(String filterString) async {
 
 Future<List> readDBFavFood() async {
   final dbPath = await getDatabasesPath();
-  final path = join(dbPath, "food_db_merged_updated.db");
+  final path = join(dbPath, "food_db-2024-01-09.db");
   Database db = await openDatabase(path);
   List<Map<String, Object?>> result = await db.query(
     'foods_merged',

@@ -1,3 +1,5 @@
+import 'package:flutter/services.dart';
+
 import 'Translation/translation.dart';
 import 'dbhelper/food_db_helper.dart';
 import 'specifyNutrition.dart';
@@ -55,18 +57,20 @@ class DataSearch extends SearchDelegate<String> {
   @override
   Widget buildResults(BuildContext context) {
     // show some result based on the selection of the user
-    return SpecifyNutrition(
-      foodId: clickedFoodId,
-      food: clickedFood,
-      water: clickedWater,
-      cal: calories,
-      prot: protein,
-      foodTime: dateTime_food,
-      fats: fat,
-      carbohydrates: carbohydrates,
-      port: portion,
-      saved: saved,
-    );
+    return clickedFood.isEmpty
+        ? getEmpty(context)
+        : SpecifyNutrition(
+            foodId: clickedFoodId,
+            food: clickedFood,
+            water: clickedWater,
+            cal: calories,
+            prot: protein,
+            foodTime: dateTime_food,
+            fats: fat,
+            carbohydrates: carbohydrates,
+            port: portion,
+            saved: saved,
+          );
   }
 
   @override
@@ -151,8 +155,9 @@ class DataSearch extends SearchDelegate<String> {
         tmp.sort((a, b) => a.length.compareTo(b.length));
 
         value.sort((a, b) => a.length.compareTo(b.length));
+        Set distinctValue = value.toSet();
+        foodList = distinctValue.toList();
 
-        foodList = value;
         gotDB = true; //ensure to call it just once
       });
     }

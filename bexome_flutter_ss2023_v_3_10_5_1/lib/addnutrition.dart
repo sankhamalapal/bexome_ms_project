@@ -44,11 +44,11 @@ class _AddNutritionState extends State<AddNutrition> {
   static const List<Widget> mealsEN = <Widget>[
     Padding(
       padding: EdgeInsets.all(10.0),
-      child: Text('Favorite Meals'),
+      child: Text('Favorite dishes'),
     ),
     Padding(
       padding: EdgeInsets.all(10.0),
-      child: Text('Recent Meals'),
+      child: Text('Recent dishes'),
     ),
   ];
   static const List<Widget> mealsDE = <Widget>[
@@ -58,7 +58,7 @@ class _AddNutritionState extends State<AddNutrition> {
     ),
     Padding(
       padding: EdgeInsets.all(10.0),
-      child: Text('Letzte Mahlzeiten'),
+      child: Text('Letzte Speisen'),
     ),
   ];
   int indexMeal = 0;
@@ -150,8 +150,8 @@ class _AddNutritionState extends State<AddNutrition> {
                         fontWeight: FontWeight.bold,
                         color: black),
                   ),
-                  Text(translate.getTranslation(context, 'quick_meal'),
-                      style: TextStyle(fontWeight: FontWeight.w400)),
+                  // Text(translate.getTranslation(context, 'quick_meal'),
+                  //     style: TextStyle(fontWeight: FontWeight.w400)),
                   getSearchbar(),
                   SizedBox(
                     height: 10,
