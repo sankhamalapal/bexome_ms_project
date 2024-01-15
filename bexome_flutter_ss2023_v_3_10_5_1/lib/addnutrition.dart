@@ -327,9 +327,11 @@ class _AddNutritionState extends State<AddNutrition> {
       for (var element in value) {
         tmp.add(element);
       }
-      setState(() {
-        foodRecentList = tmp;
-      });
+      if (mounted) {
+        setState(() {
+          foodRecentList = tmp;
+        });
+      }
       //ensure to call it just once
     });
   }
@@ -342,9 +344,11 @@ class _AddNutritionState extends State<AddNutrition> {
       for (var element in value) {
         tmp.add(element);
       }
-      setState(() {
-        foodFavList = tmp;
-      });
+      if (mounted) {
+        setState(() {
+          foodFavList = tmp;
+        });
+      }
     });
   }
 
