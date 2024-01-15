@@ -55,9 +55,17 @@ class DataSearch extends SearchDelegate<String> {
   }
 
   @override
+  void dispose() {
+    clickedFood = '';
+    clickedFoodId = '';
+    super.dispose();
+  }
+
+  @override
   Widget buildResults(BuildContext context) {
     // show some result based on the selection of the user
-    return clickedFood.isEmpty
+
+    Widget resultWidget = clickedFood.isEmpty
         ? getEmpty(context)
         : SpecifyNutrition(
             foodId: clickedFoodId,
@@ -71,6 +79,9 @@ class DataSearch extends SearchDelegate<String> {
             port: portion,
             saved: saved,
           );
+    clickedFood = '';
+    clickedFoodId = '';
+    return resultWidget;
   }
 
   @override
