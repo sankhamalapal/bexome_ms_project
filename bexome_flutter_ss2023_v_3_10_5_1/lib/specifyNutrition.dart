@@ -146,7 +146,7 @@ class _SpecifyNutritionState extends State<SpecifyNutrition> {
                                             child: new Text(
                                                 translate.getTranslation(
                                                     context,
-                                                    'fruits_veggie_fact'),
+                                                    'fruits_veggie_fact1'),
                                                 style: TextStyle(
                                                     color: thirdColor,
                                                     fontWeight:
@@ -163,14 +163,14 @@ class _SpecifyNutritionState extends State<SpecifyNutrition> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      translate.getTranslation(
-                                          context, 'sweets'),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
-                                          color: fourthColor),
-                                    ),
+                                    // Text(
+                                    //   translate.getTranslation(
+                                    //       context, 'sweets'),
+                                    //   style: TextStyle(
+                                    //       fontWeight: FontWeight.bold,
+                                    //       fontSize: 15,
+                                    //       color: fourthColor),
+                                    // ),
                                     SizedBox(
                                       height: 50,
                                       child: Row(
@@ -178,7 +178,7 @@ class _SpecifyNutritionState extends State<SpecifyNutrition> {
                                           Expanded(
                                             flex: 1,
                                             child: new Image.asset(
-                                              'assets/pudding.png',
+                                              'assets/broccoli.png',
                                               // width: 50,
                                               // height: 50,
                                               fit: BoxFit.scaleDown,
@@ -188,7 +188,8 @@ class _SpecifyNutritionState extends State<SpecifyNutrition> {
                                             flex: 2,
                                             child: new Text(
                                                 translate.getTranslation(
-                                                    context, 'sweets_fact'),
+                                                    context,
+                                                    'fruits_veggie_fact2'),
                                                 style: TextStyle(
                                                     color: thirdColor,
                                                     fontWeight:
@@ -227,10 +228,10 @@ class _SpecifyNutritionState extends State<SpecifyNutrition> {
                                           ),
                                           Expanded(
                                             flex: 2,
-                                            child: new Text(
+                                            child: Text(
                                                 translate.getTranslation(
-                                                    context, 'Meat_fact'),
-                                                style: TextStyle(
+                                                    context, 'Meat_fact1'),
+                                                style: const TextStyle(
                                                     color: thirdColor,
                                                     fontWeight:
                                                         FontWeight.bold)),
@@ -246,14 +247,14 @@ class _SpecifyNutritionState extends State<SpecifyNutrition> {
                                 child: Column(
                                   mainAxisAlignment: MainAxisAlignment.start,
                                   children: [
-                                    Text(
-                                      translate.getTranslation(
-                                          context, 'fast_food'),
-                                      style: TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          fontSize: 15,
-                                          color: fourthColor),
-                                    ),
+                                    // Text(
+                                    //   translate.getTranslation(
+                                    //       context, 'fast_food'),
+                                    //   style: TextStyle(
+                                    //       fontWeight: FontWeight.bold,
+                                    //       fontSize: 15,
+                                    //       color: fourthColor),
+                                    // ),
                                     SizedBox(
                                       height: 50,
                                       child: Row(
@@ -261,7 +262,7 @@ class _SpecifyNutritionState extends State<SpecifyNutrition> {
                                           Expanded(
                                             flex: 1,
                                             child: new Image.asset(
-                                              'assets/pizza.png',
+                                              'assets/eggs.png',
                                               // width: 50,
                                               // height: 50,
                                               fit: BoxFit.scaleDown,
@@ -271,7 +272,7 @@ class _SpecifyNutritionState extends State<SpecifyNutrition> {
                                             flex: 2,
                                             child: new Text(
                                                 translate.getTranslation(
-                                                    context, 'fast_food_fact'),
+                                                    context, 'Meat_fact2'),
                                                 style: TextStyle(
                                                     color: thirdColor,
                                                     fontWeight:

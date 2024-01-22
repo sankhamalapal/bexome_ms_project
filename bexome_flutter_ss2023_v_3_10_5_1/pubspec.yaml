@@ -82,9 +82,10 @@ flutter:
     - lib/Translation/de.json
     - lib/Translation/en.json
     - assets/apple.png
-    - assets/pudding.png
     - assets/fish.png
-    - assets/pizza.png
+    - assets/eggs.png
+    - assets/broccoli.png
+    -
   # assets:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
