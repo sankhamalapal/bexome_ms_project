@@ -1,93 +1,154 @@
-# Master_Project-BEXOME
+# 🏥 Bexome - Interactive Diet Logging App
 
+A cross-platform mobile health monitoring application for tracking daily routines including diet, physical activity, and health metrics. Developed using Flutter for iOS and Android compatibility.
 
+## 📋 Overview
 
-## Getting started
+Bexome is a smartphone application that combines self-monitoring by users with sensor monitoring capabilities to track daily health activities. The app enables participants in scientific studies to log dietary information while automatically collecting health-related data through smartphone sensors and Google Fit/Google Connect APIs. All collected data is securely transmitted to a back-end server for research purposes.
 
-To make it easy for you to get started with GitLab, here's a list of recommended next steps.
+## ✨ Features
 
-Already a pro? Just edit this README.md and make it your own. Want to make it easy? [Use the template at the bottom](#editing-this-readme)!
+### 🎯 Core Functionality
+- **🌐 Multi-language Support**: Available in German and English with easy extensibility for additional languages
+- **🍽️ Diet Logging**: Search and log food items with nutritional information
+- **📱 Barcode & QR Code Scanning**: Quick food entry using smartphone camera
+- **⭐ Favorite & Recent Meals**: Quick access to frequently consumed items
+- **⚖️ Weight Tracking**: Log and monitor weight changes over time
+- **👤 User Profile Management**: Save and update personal health information
 
-## Add your files
+### 📊 Data Collection
+- **🏃 Google Fit Integration**: Automatic collection of fitness and activity data
+- **💪 Google Connect Data**: Health metrics synchronization
+- **📍 Location Services**: Current location tracking and address resolution
+- **🌤️ Weather Data**: Contextual weather information based on location
+- **📡 Sensor Data**: Accelerometer and other smartphone sensor monitoring
 
-- [ ] [Create](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#create-a-file) or [upload](https://docs.gitlab.com/ee/user/project/repository/web_editor.html#upload-a-file) files
-- [ ] [Add files using the command line](https://docs.gitlab.com/ee/gitlab-basics/add-file.html#add-a-file-using-the-command-line) or push an existing Git repository with the following command:
+### 💎 User Experience
+- Intuitive interface with save, back, and info buttons
+- Persistent data storage (meals, weight, user details)
+- Real-time data synchronization with cloud server
+- Pause functionality to temporarily stop data transmission (1-hour intervals)
 
+## 🛠️ Technology Stack
+
+- **Framework**: Flutter 3.10+
+- **Language**: Dart
+- **Database**: SQLite (sqflite package)
+- **Key Packages**:
+  - `health` (v8.0.0) - Google Fit/Connect integration
+  - `geolocator` - Location services
+  - `geocoding` - Address resolution
+  - `weather` - Weather information
+  - `qr_code_scanner` - QR code scanning
+  - `flutter_localization` - Multi-language support
+  - `permission_handler` - App permissions management
+
+## 🗄️ Database
+
+The app uses an optimized food database that integrates:
+- 🇩🇪 BLS (German Nutrient Data Base)
+- 🔢 Barcode database
+- 💊 Bodymed database
+- ➕ Additional custom food items
+
+**📈 Database Statistics**:
+- Original entries: 143,584
+- After duplicate removal: 86,924
+- Standardized metrics for energy, fat, proteins, carbohydrates, and fiber
+
+## 🚀 Installation
+
+### ⚙️ Prerequisites
+- Flutter SDK 3.10 or higher
+- Dart SDK
+- Android Studio / Xcode for platform-specific builds
+- Google API Console project with Fitness API enabled
+
+### 📦 Setup
+
+1. Clone the repository:
+```bash
+git clone https://github.com/sankhamalapal/bexome_ms_project.git
+cd bexome_ms_project/bexome_flutter_ss2023_v_3_10_5_1/
 ```
-cd existing_repo
-git remote add origin https://gitlab.com/spal360/master_project-bexome.git
-git branch -M main
-git push -uf origin main
+
+2. Install dependencies:
+```bash
+flutter pub get
 ```
 
-## Integrate with your tools
+3. Configure Google Fit API:
+   - Create a project in Google API Console
+   - Enable the Fitness API
+   - Create OAuth 2.0 credentials
+   - Add your app's SHA-1 fingerprint and package name
 
-- [ ] [Set up project integrations](https://gitlab.com/spal360/master_project-bexome/-/settings/integrations)
+4. Run the app:
+```bash
+flutter run
+```
 
-## Collaborate with your team
+## 🔐 Permissions
 
-- [ ] [Invite team members and collaborators](https://docs.gitlab.com/ee/user/project/members/)
-- [ ] [Create a new merge request](https://docs.gitlab.com/ee/user/project/merge_requests/creating_merge_requests.html)
-- [ ] [Automatically close issues from merge requests](https://docs.gitlab.com/ee/user/project/issues/managing_issues.html#closing-issues-automatically)
-- [ ] [Enable merge request approvals](https://docs.gitlab.com/ee/user/project/merge_requests/approvals/)
-- [ ] [Set auto-merge](https://docs.gitlab.com/ee/user/project/merge_requests/merge_when_pipeline_succeeds.html)
+The app requires the following permissions:
+- **📍 Location**: Access current location for contextual data
+- **📷 Camera**: Barcode and QR code scanning
+- **🔑 Google Account**: Access to Google Fit and Google Connect data
 
-## Test and Deploy
+## 📤 Data Transmission
 
-Use the built-in continuous integration in GitLab.
+Data is automatically sent to the IES Lab cloud server in JSON format at app startup. The following data types are transmitted:
+- 🍽️ Meal logs
+- ⚖️ Weight entries
+- 📍 Location data (address and coordinates)
+- 🌤️ Weather information
+- 💪 Google Fit/Connect health metrics
 
-- [ ] [Get started with GitLab CI/CD](https://docs.gitlab.com/ee/ci/quick_start/index.html)
-- [ ] [Analyze your code for known vulnerabilities with Static Application Security Testing (SAST)](https://docs.gitlab.com/ee/user/application_security/sast/)
-- [ ] [Deploy to Kubernetes, Amazon EC2, or Amazon ECS using Auto Deploy](https://docs.gitlab.com/ee/topics/autodevops/requirements.html)
-- [ ] [Use pull-based deployments for improved Kubernetes management](https://docs.gitlab.com/ee/user/clusters/agent/)
-- [ ] [Set up protected environments](https://docs.gitlab.com/ee/ci/environments/protected_environments.html)
+A timestamp system prevents duplicate data transmission between sessions.
 
-***
+## 📁 Project Structure
 
-# Editing this README
+- **Food Database**: Optimized relational database with nutritional information
+- **Local Storage**: SQLite tables for food, weight, and user data
+- **API Integration**: RESTful communication with back-end server
+- **Sensor Management**: Location, accelerometer, and camera access
 
-When you're ready to make this README your own, just edit this file and use the handy template below (or feel free to structure it however you want - this is just a starting point!). Thanks to [makeareadme.com](https://www.makeareadme.com/) for this template.
+## 🔮 Future Development
 
-## Suggestions for a good README
+Areas identified for future enhancement:
+- ✅ Complete study registration screen integration
+- 💧 Enhanced water detection logic
+- 📏 Automatic metric separation (g vs ml) for food and drinks
+- 🏠 Context-aware location tracking (home, work, sports venues, etc.)
+- 👥 User-contributed food items with validation workflow
+- 🔗 Extended QR code back-end connectivity
 
-Every project is different, so consider which of these sections apply to yours. The sections used in the template are suggestions for most open source projects. Also keep in mind that while a README can be too long and detailed, too long is better than too short. If you think your README is too long, consider utilizing another form of documentation rather than cutting out information.
+## 🤝 Contributing
 
-## Name
-Choose a self-explaining name for your project.
+This project was developed as a Master's thesis at the University of Freiburg. 
 
-## Description
-Let people know what your project can do specifically. Provide context and add a link to any reference visitors might be unfamiliar with. A list of Features or a Background subsection can also be added here. If there are alternatives to your project, this is a good place to list differentiating factors.
+## 👨‍💻 Author
 
-## Badges
-On some READMEs, you may see small images that convey metadata, such as whether or not all the tests are passing for the project. You can use Shields to add some to your README. Many services also have instructions for adding a badge.
+**Sankhamala Pal**  
+**📅 Date**: September 29, 2023
 
-## Visuals
-Depending on what you are making, it can be a good idea to include screenshots or even a video (you'll frequently see GIFs rather than actual videos). Tools like ttygif can help, but check out Asciinema for a more sophisticated method.
+**🎓 Supervisors**:
+- Prof. Dr. Oliver Amft
+- Dijana Ivezic
 
-## Installation
-Within a particular ecosystem, there may be a common way of installing things, such as using Yarn, NuGet, or Homebrew. However, consider the possibility that whoever is reading your README is a novice and would like more guidance. Listing specific steps helps remove ambiguity and gets people to using your project as quickly as possible. If it only runs in a specific context like a particular programming language version or operating system or has dependencies that have to be installed manually, also add a Requirements subsection.
+## 🙏 Acknowledgments
 
-## Usage
-Use examples liberally, and show the expected output if you can. It's helpful to have inline the smallest example of usage that you can demonstrate, while providing links to more sophisticated examples if they are too long to reasonably include in the README.
+- 🏛️ Chair of Digital Health, University of Freiburg
+- 👥 Previous Bexome development teams
+- 📚 Contributors to the food database integration
 
-## Support
-Tell people where they can go to for help. It can be any combination of an issue tracker, a chat room, an email address, etc.
+## 📄 License
 
-## Roadmap
-If you have ideas for releases in the future, it is a good idea to list them in the README.
+Developed for research purposes at the University of Freiburg.
 
-## Contributing
-State if you are open to contributions and what your requirements are for accepting them.
+## 🔗 References
 
-For people who want to make changes to your project, it's helpful to have some documentation on how to get started. Perhaps there is a script that they should run or some environment variables that they need to set. Make these steps explicit. These instructions could also be useful to your future self.
+For more information about the Bexome platform and related research:
+- 🌐 [Bexome Official Website](https://bexome.com/)
+- 📖 [Google Fit API Documentation](https://developers.google.com/fit/android/get-api-key)
 
-You can also document commands to lint the code or run tests. These steps help to ensure high code quality and reduce the likelihood that the changes inadvertently break something. Having instructions for running tests is especially helpful if it requires external setup, such as starting a Selenium server for testing in a browser.
-
-## Authors and acknowledgment
-Show your appreciation to those who have contributed to the project.
-
-## License
-For open source projects, say how it is licensed.
-
-## Project status
-If you have run out of energy or time for your project, put a note at the top of the README saying that development has slowed down or stopped completely. Someone may choose to fork your project or volunteer to step in as a maintainer or owner, allowing your project to keep going. You can also make an explicit request for maintainers.
